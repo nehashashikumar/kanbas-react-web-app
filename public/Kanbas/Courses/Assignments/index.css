@@ -1,0 +1,41 @@
+.wd-component-bg-color {
+    background-color: #f5f5f5;
+  }
+  
+  .list-assignment {
+    padding: 0px;
+    border-radius: 0%;
+    list-style-type: none;
+  }
+  
+  .list-assignment > ul > li {
+    padding-top: 12px;
+  }
+  
+  .list-assignment > li {
+    background-color: #f5f5f5;
+    border: 1px solid gray;
+    margin-bottom: 5px;
+    padding: 0px;
+    border-radius: 0%;
+    padding-top: 15px;
+  }
+  
+  .list-assignment > ul > ul > li {
+    padding: 5px;
+    border-radius: 0%;
+    border-top: 1px solid gray !important;
+    border-left: 3px solid green;
+  }
+  
+  .wd-button {
+    margin-left: 5px;
+  }
+
+  .wd-fg-color-green {
+    color: green;
+  }
+
+  .wd-color-green {
+    color: green;
+  }
