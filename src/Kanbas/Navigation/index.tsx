@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import "./index.css";
 import logo from "../images/northeastern-university-logo.png";
-import { FaTachometerAlt, FaRegUserCircle, FaBook, FaRegCalendarAlt, FaEnvelopeOpenText, FaClock, FaDesktop, FaCircle, FaQuestionCircle, FaArrowRight } from "react-icons/fa";
-function KanbasNavigation() {
+import { FaTachometerAlt, FaRegUserCircle, FaBook, FaRegCalendarAlt, FaEnvelopeOpenText, FaClock, FaDesktop, FaQuestionCircle, FaArrowRight } from "react-icons/fa";
+function Navigation() {
   const links = [
     { label: "Account", icon: <FaRegUserCircle className="fs-2" style={{color: "lightgrey"}}/> },
     { label: "Dashboard", icon: <FaTachometerAlt className="fs-2" style={{color: "red"}} /> },
@@ -17,7 +17,7 @@ function KanbasNavigation() {
   const { pathname } = useLocation();
   return (
     <ul className="wd-kanbas-navigation">
-      <li> <Link to={`https://www.northeastern.edu/`}><img src={logo} className="wd-logo"/></Link> </li>
+      <li> <Link to={`https://www.northeastern.edu/`}><img src={logo} className="wd-logo" alt="logo"/></Link> </li>
       {links.map((link, index) => (
         <li key={index} className={pathname.includes(link.label) ? "wd-active" : ""}>
           <Link to={`/Kanbas/${link.label}`}> {link.icon} {link.label} </Link>
@@ -26,4 +26,4 @@ function KanbasNavigation() {
     </ul>
   );
 }
-export default KanbasNavigation;
+export default Navigation;
