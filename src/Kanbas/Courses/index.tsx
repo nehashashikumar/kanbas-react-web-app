@@ -20,7 +20,7 @@ import Grades from "./Grades";
 function Courses() {
   const { courseId } = useParams();
   const { pathname } = useLocation();
-  const [slash, kanbas, cour, id, screen, assignment] = pathname.split("/");
+  const [screen, assignment] = pathname.split("/");
   const isAssignmentScreen = assignment ? true : false;
 
   const course = courses.find((course) => course._id === courseId);

@@ -5,7 +5,7 @@
       "number": "CS1234",
       "startDate": "2023-01-10",
       "endDate": "2023-05-15",
-      "image": "reactjs.png"
+      "image": "blue1.jpg"
     },
     {
       "_id": "CS5010",
@@ -13,7 +13,7 @@
       "number": "CS5010",
       "startDate": "2023-01-10",
       "endDate": "2023-05-15",
-      "image": "java.png"
+      "image": "blue2.jpg"
     },
     {
       "_id": "CS5200",
@@ -21,7 +21,7 @@
       "number": "CS5200",
       "startDate": "2023-01-10",
       "endDate": "2023-05-15",
-      "image": "dbms.jpeg"
+      "image": "blue3.jpg"
     },
     {
       "_id": "CS5800",
@@ -29,6 +29,6 @@
       "number": "CS5800",
       "startDate": "2023-01-10",
       "endDate": "2023-05-15",
-      "image": "algo.jpeg"
+      "image": "blue4.jpg"
     }
   ]
