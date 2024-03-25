@@ -141,11 +141,6 @@ function Assignments() {
                       <button
                         className="btn m-0 pt-0 pb-0 me-1 btn-danger btn-sm"
                         onClick={() => {
-                          // handleDelete()
-                          //   ? dispatch(deleteAssignment(assignment._id))
-                          //   : navigate(
-                          //       `/Kanbas/Courses/${courseId}/Assignments`
-                          //     );
                           if (handleDelete()) {
                             dispatch(deleteAssignment(assignment._id))
                           }

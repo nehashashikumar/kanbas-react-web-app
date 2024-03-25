@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { courses } from "../Database";
 
 function Dashboard(
   { course, course1, setCourse1, addNewCourse,
@@ -46,8 +45,6 @@ function Dashboard(
       <button 
       className="btn btn-primary btn-md me-1"
       style={{
-        //width: "50px",
-       // backgroundColor: "blue",
         borderRadius: "5px",
       }}
       onClick={updateCourse} >
@@ -94,7 +91,6 @@ function Dashboard(
                     <button
                     className="btn btn-primary btn-sm me-1"
                     style={{
-                      //width: "50px",
                       backgroundColor: "red",
                       borderRadius: "5px",
                     }}

@@ -27,18 +27,6 @@ function AssignmentEditor() {
   const assignment = useSelector(
     (state: KanbasState) => state.assignmentsReducer.assignment
   );
-  // const assignmentList = useSelector((state: KanbasState) =>
-  //       state.assignmentsReducer.assignments);
-
-  //   useEffect(() => {
-  //     const assignmentData = assignmentList.find(a => a._id === assignmentId);
-  //     if (assignmentData) {
-  //         dispatch(selectAssignment(assignmentData));
-  //         console.log("Hello");
-  //     } else {
-  //         dispatch(cancelAssignmentUpdate(assignment));
-  //     }
-  // }, [dispatch, assignmentId]);
 
   const handleAddingNew = () => {
     dispatch(addAssignment({ ...assignment, course: courseId }));
