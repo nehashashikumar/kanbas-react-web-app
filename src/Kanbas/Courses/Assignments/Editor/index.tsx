@@ -1,166 +1,197 @@
-import React from 'react';
-import { assignments } from '../../../Database';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import React, { useEffect } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addAssignment,
+  deleteAssignment,
+  updateAssignment,
+  selectAssignment,
+} from "../assignmentsReducer";
+import { KanbasState } from "../../../store";
+import { cancelAssignmentUpdate } from "../assignmentsReducer";
 
 function AssignmentEditor() {
-    const { assignmentId, courseId } = useParams();
-    const assignment = assignments.find((assignment) =>
-        assignment._id === assignmentId);
-    const navigate = useNavigate();
-    const handleSave = () => {
-        navigate(`/Kanbas/Courses/${courseId}/Assignments`);
-    };
-    return (
-        <div>
-            <h2>Assignment Name</h2>
-            <input value={assignment?.title}
-                className="form-control mb-2" />
-            <br />
-            <textarea className="form-control" cols={50} rows={5}>This assignment describes how to install the development environment for creating and working with Web applications we will be developing this semester.
-                We will add new content every week, pushing the code to a GitHub source repository, and then deploying the content to a remote server hosted on Netlify.</textarea>
-            <br />
-            <div className="row g-0 text-end" style={{ paddingBottom: "15px" }}>
-                <div className="col-6 col-md-4" style={{ paddingTop: "5px", paddingRight: "15px" }}>
-                    Points
-                </div>
-                <div className="col-sm-6 col-md-8 w-50">
-                    <input
-                        className="form-control"
-                        type="number"
-                        placeholder="Points"
-                        aria-label="default input example"
-                        value="100"
-                    />
-                </div>
-            </div>
-            <div className="row g-0 text-end" style={{ paddingBottom: "15px" }}>
-                <div className="col-6 col-md-4" style={{ paddingTop: "5px", paddingRight: "15px" }}>
-                    Assignment Group
-                </div>
-                <div className="col-sm-6 col-md-8 w-50">
-                    <select className="form-control form-select">
-                        <option>ASSIGNMENTS</option>
-                    </select>
-                </div>
-            </div>
-            <div className="row g-0 text-end" style={{ paddingBottom: "15px" }}>
-                <div className="col-6 col-md-4" style={{ paddingTop: "5px", paddingRight: "15px" }}>
-                    Display Grade as
-                </div>
-                <div className="col-sm-6 col-md-8 w-50">
-                    <select className="form-control form-select">
-                        <option>Percentage</option>
-                        <option>Decimal</option>
-                        <option>Percentile</option>
-                    </select>
-                </div>
-            </div>
-            <div className="row g-0 text-end" style={{ paddingBottom: "15px" }}>
-                <div className="col-6 col-md-4" style={{ paddingTop: "5px", paddingRight: "15px" }}>
-                </div>
-                <div className="col-sm-6 col-md-8" style={{ textAlign: "start" }}>
-                    <input type="checkbox" />
-                    Do not count this assignment towards the final grade
-                </div>
-            </div>
-            <div className="row g-0 text-end" style={{ paddingBottom: "15px" }}>
-                <div className="col-6 col-md-4" style={{ paddingTop: "5px", paddingRight: "15px" }}>
-                    Submission Type
-                </div>
-                <div className="col-sm-6 col-md-8 w-50" style={{ textAlign: "start" }}>
-                    <div
-                        className="wd-group"
-                        style={{ border: "0.5px solid black", borderRadius: "1%", padding: "10px" }}
-                    >
-                        <select className="form-control">
-                            <option>Online</option>
-                            <option>In-Person</option>
-                        </select>
-                        <br />
-                        <b>Online Entry Options</b>
-                        <br />
-                        <input type="checkbox" checked id="textEntry" />
-                        <label>Text Entry</label> <br />
-                        <input type="checkbox" checked /> Website URL <br />
-                        <label><input type="checkbox" checked /> Media recordings </label><br />
-                        <input type="checkbox" /> Student Annotation <br />
-                        <input type="checkbox" checked /> File Uploads <br />
-                        <input type="checkbox" /> Restrict Upload File Types <br />
-                        <br />
-                    </div>
-                </div>
-            </div>
-            <div className="row g-0 text-end">
-                <div className="col-6 col-md-4" style={{ paddingTop: "5px", paddingRight: "15px" }}>
-                    Assign
-                </div>
-                <div className="col-sm-6 col-md-8 w-50" style={{ textAlign: "start" }}>
-                    <div
-                        className="wd-group"
-                        style={{ border: "0.5px solid black", borderRadius: "1%", padding: "10px" }}
-                    >
-                        <b>Assign to</b>
-                        <input
-                            className="form-control"
-                            type="text"
-                            placeholder="Choose"
-                            value="Everyone"
-                            aria-label="default input example"
-                        />
-                        <br />
-                        <b>Due</b>
-                        <input className="form-control" type="datetime-local" />
-                        <br />
-                        <div
-                            className="wd-flex-row-container"
-                            style={{ width: "-webkit-fill-available", justifyContent: "space-around" }}
-                        >
-                            <div className="row" >
-                                <div className="col">
-                                    <b>Available from </b>
+  const { assignmentId, courseId } = useParams();
+  const isAddNew = assignmentId === "Editor";
+  const navigate = useNavigate();
+  const handleSave = () => {
+    if (isAddNew) {
+      handleAddingNew();
+    } else {
+      dispatch(updateAssignment(assignment));
+    }
+    navigate(`/Kanbas/Courses/${courseId}/Assignments`);
+  };
 
-                                </div>
-                                <div className="col"><b>Until </b>
+  const dispatch = useDispatch();
+  const assignment = useSelector(
+    (state: KanbasState) => state.assignmentsReducer.assignment
+  );
+  // const assignmentList = useSelector((state: KanbasState) =>
+  //       state.assignmentsReducer.assignments);
 
-                                </div>
+  //   useEffect(() => {
+  //     const assignmentData = assignmentList.find(a => a._id === assignmentId);
+  //     if (assignmentData) {
+  //         dispatch(selectAssignment(assignmentData));
+  //         console.log("Hello");
+  //     } else {
+  //         dispatch(cancelAssignmentUpdate(assignment));
+  //     }
+  // }, [dispatch, assignmentId]);
 
-
-                            </div>
-
-                            <div className="row">
-                                <div className="col">
-                                    <input className="form-control w-75" type="datetime-local" />
-                                </div>
-                                <div className="col">
-                                    <input className="form-control w-75" type="datetime-local" />
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style={{ marginLeft: "10px" }}>
-                <div className="d-flex justify-content-between" style={{ paddingTop: "15px" }}>
-                    <span style={{ marginLeft: "20px", paddingTop: "15px" }}>
-                        <input type="checkbox" />
-                        Notify users that this content has changed
-                    </span>
-                    <span>
-                        <Link to={`/Kanbas/Courses/${courseId}/Assignments`}
-                            className="btn" style={{ height: "fit-content", backgroundColor: "#E0E0E0" }}>
-                            Cancel
-                        </Link>
-                        <button onClick={handleSave} className="btn btn-danger" style={{ marginRight: "5px" }}>
-                            Save
-                        </button>
-                    </span>
-                </div>
-
-                <hr style={{ marginLeft: "10px" }} />
-            </div>
+  const handleAddingNew = () => {
+    dispatch(addAssignment({ ...assignment, course: courseId }));
+  };
+  return (
+    <div className="me-3">
+      <h2>Assignment Name</h2>
+      <input
+        value={assignment?.title}
+        onChange={(e) =>
+          dispatch(selectAssignment({ ...assignment, title: e.target.value }))
+        }
+        className="form-control mb-2"
+      />
+      <br />
+      <textarea
+        value={assignment?.description}
+        className="form-control"
+        cols={50}
+        rows={5}
+        onChange={(e) =>
+          dispatch(
+            selectAssignment({ ...assignment, description: e.target.value })
+          )
+        }
+      ></textarea>
+      <br />
+      <div className="row g-0 text-end" style={{ paddingBottom: "15px" }}>
+        <div
+          className="col-6 col-md-4"
+          style={{ paddingTop: "5px", paddingRight: "15px" }}
+        >
+          Points
         </div>
-    );
-}
+        <div className="col-sm-6 col-md-8 w-50">
+          <input
+            className="form-control"
+            type="number"
+            placeholder="Points"
+            aria-label="default input example"
+            value={assignment?.points}
+            onChange={(e) =>
+              dispatch(
+                selectAssignment({ ...assignment, points: e.target.value })
+              )
+            }
+          />
+        </div>
+      </div>
+      <div className="row g-0 text-end">
+        <div
+          className="col-6 col-md-4"
+          style={{ paddingTop: "5px", paddingRight: "15px" }}
+        >
+          Assign
+        </div>
+        <div className="col-sm-6 col-md-8 w-50" style={{ textAlign: "start" }}>
+          <div
+            className="wd-group"
+            style={{
+              border: "0.5px solid black",
+              borderRadius: "1%",
+              padding: "10px",
+            }}
+          >
+            <b>Assign to</b>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Choose"
+              value="Everyone"
+              aria-label="default input example"
+            />
+            <br />
+            <b>Due</b>
+            <input
+              className="form-control"
+              type="datetime-local"
+              value={assignment?.dueDateTime}
+              onChange={(e) =>
+                dispatch(
+                  selectAssignment({
+                    ...assignment,
+                    dueDateTime: e.target.value,
+                  })
+                )
+              }
+            />
 
-export default AssignmentEditor
+            <br />
+            <div
+              className="wd-flex-row-container"
+              style={{
+                width: "-webkit-fill-available",
+                justifyContent: "space-around",
+              }}
+            >
+              <div className="row">
+                <div className="col">
+                  <b>Available from </b>
+                </div>
+                <div className="col">
+                  <b>Until </b>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
+                  <input
+                    className="form-control w-75"
+                    type="datetime-local"
+                    value={assignment?.availableFromDate}
+                    onChange={(e) =>
+                      dispatch(
+                        selectAssignment({
+                          ...assignment,
+                          availableFromDate: e.target.value,
+                        })
+                      )
+                    }
+                  />
+                </div>
+                <div className="col">
+                  <input
+                    className="form-control w-75"
+                    type="datetime-local"
+                    value={assignment?.availableUntilDate}
+                    onChange={(e) =>
+                      dispatch(
+                        selectAssignment({
+                          ...assignment,
+                          availableUntilDate: e.target.value,
+                        })
+                      )
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onClick={handleSave} className="btn btn-success ms-2 float-end">
+        Save
+      </button>
+      <Link
+        onClick={() => dispatch(cancelAssignmentUpdate(assignment))}
+        to={`/Kanbas/Courses/${courseId}/Assignments`}
+        className="btn btn-danger float-end"
+      >
+        Cancel
+      </Link>
+    </div>
+  );
+}
+export default AssignmentEditor;

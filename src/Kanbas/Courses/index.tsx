@@ -17,13 +17,13 @@ import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import Grades from "./Grades";
 
-function Courses() {
+function Courses({ course2 }: { course2: any[]; }) {
   const { courseId } = useParams();
   const { pathname } = useLocation();
-  const [screen, assignment] = pathname.split("/");
+  const [slash, kanbas, cour, id, screen, assignment] = pathname.split("/");
   const isAssignmentScreen = assignment ? true : false;
 
-  const course = courses.find((course) => course._id === courseId);
+  const course = course2.find((course) => course._id === courseId);
   const isStudentView = (screen === 'Home') || (screen === 'Modules')
   return (
     <>
@@ -46,7 +46,7 @@ function Courses() {
                   }}
                   to={`/Kanbas/Courses/${courseId}/Home`}
                 >
-                   {course?._id}{" "}
+                   {course?.number}{" "}
                 </Link>
               </li>
               {!isAssignmentScreen ? (
