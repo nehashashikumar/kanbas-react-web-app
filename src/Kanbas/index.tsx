@@ -8,18 +8,18 @@ import { courses } from "./Database";
 import store from "./store";
 import { Provider } from "react-redux";
 
-
-
 function Kanbas() {
   const [course, setCourses] = useState(courses);
   const [course1, setCourse1] = useState({
     _id: "0",
     name: "New Course",
     number: "New Number",
+    desc: "CS5800.12631.202410",
     startDate: "2023-09-10",
     endDate: "2023-12-15",
-    image: "reactjs.png",
+    image: "blue1.png",
   });
+
   const updateCourse = () => {
     setCourses(
       course.map((c) => {

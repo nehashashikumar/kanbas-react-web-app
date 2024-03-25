@@ -8,7 +8,7 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { cancelAssignmentUpdate, deleteAssignment, selectAssignment } from "./assignmentsReducer";
+import { cancelAssignmentUpdate, deleteAssignment, selectAssignment } from "./Editor/assignmentsReducer";
 import { KanbasState } from "../../store";
 
 function Assignments() {

@@ -6,9 +6,9 @@ import {
   deleteAssignment,
   updateAssignment,
   selectAssignment,
-} from "../assignmentsReducer";
+} from "./assignmentsReducer";
 import { KanbasState } from "../../../store";
-import { cancelAssignmentUpdate } from "../assignmentsReducer";
+import { cancelAssignmentUpdate } from "./assignmentsReducer";
 
 function AssignmentEditor() {
   const { assignmentId, courseId } = useParams();
